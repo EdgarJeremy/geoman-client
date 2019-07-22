@@ -1,0 +1,32 @@
+{
+  "name": "geoman-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/geoman.min.js",
+  "types": "./dist/geoman.d.ts",
+  "scripts": {
+    "dev": "yarn run tslint && tsc",
+    "dev:watch": "nodemon --exec 'yarn run dev || exit 1'",
+    "tslint": "tslint --project .",
+    "bundle": "browserify ./dist/standalone.js -d --s GeoMan > ./demo/js/geoman.js && uglifyjs ./demo/js/geoman.js -o ./demo/js/geoman.min.js",
+    "test": "yarn run clean && jest && yarn run clean",
+    "test:coverage": "yarn run clean && jest --coverage && yarn run clean",
+    "clean": "rm -rf dist"
+  },
+  "author": "EdgarJeremy <edgarpontoh3141@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^23.3.7",
+    "@types/mapbox-gl": "^0.51.11",
+    "@types/node": "^12.6.8",
+    "jest": "^23.6.0",
+    "nodemon": "^1.17.5",
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "uglify-js": "^3.4.9"
+  },
+  "dependencies": {
+    "mapbox-gl": "^1.1.1"
+  }
+}
