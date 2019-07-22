@@ -11,10 +11,10 @@
     // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "declaration": true,                      /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    "declarationDir": "./dist",               /* Output directory for generated declaration files. */
+    "declarationDir": "./build",               /* Output directory for generated declaration files. */
     "sourceMap": true,                        /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./dist/",                      /* Redirect output structure to the directory. */
+    "outDir": "./build/",                      /* Redirect output structure to the directory. */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "removeComments": true,                /* Do not emit comments to output. */
@@ -62,6 +62,7 @@
   "exclude": [
     "node_modules",
     "dist",
+    "build",
     "demo",
     "**/*.test.ts",
     "**/webpack.config.ts"
@@ -69,7 +70,7 @@
   "compilation": {
     "compiler": {
       "context": "./src",
-      "outputPath": "./dist"
+      "outputPath": "./build"
     }
   }
 }

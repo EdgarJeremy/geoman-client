@@ -2,16 +2,18 @@
   "name": "geoman-client",
   "version": "0.0.1",
   "description": "",
-  "main": "./dist/geoman.min.js",
-  "types": "./dist/geoman.d.ts",
+  "main": "./build/geoman.min.js",
+  "types": "./build/geoman.d.ts",
   "scripts": {
     "dev": "yarn run tslint && tsc",
     "dev:watch": "nodemon --exec 'yarn run dev || exit 1'",
     "tslint": "tslint --project .",
-    "bundle": "browserify ./dist/standalone.js -d --s GeoMan > ./demo/js/geoman.js && uglifyjs ./demo/js/geoman.js -o ./demo/js/geoman.min.js",
+    "bundle": "tsc && browserify ./build/standalone.js -d --s GeoMan > ./dist/geoman.js && uglifyjs ./dist/geoman.js -o ./dist/geoman.min.js && cp ./dist/geoman.min.js ./demo/js/geoman.min.js",
+    "build": "npm run clean && npm run bundle",
     "test": "yarn run clean && jest && yarn run clean",
     "test:coverage": "yarn run clean && jest --coverage && yarn run clean",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf build && rm -rf dist && mkdir build && mkdir dist",
+    "prepublish": "npm run build"
   },
   "author": "EdgarJeremy <edgarpontoh3141@gmail.com>",
   "license": "MIT",
@@ -23,7 +25,7 @@
     "nodemon": "^1.17.5",
     "ts-jest": "^23.10.4",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.2",
+    "typescript": "3.2.1",
     "uglify-js": "^3.4.9"
   },
   "dependencies": {
