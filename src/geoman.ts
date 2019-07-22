@@ -25,6 +25,11 @@ export default class GeoMan {
     this.fullURL = `${this.baseURL}${this.port === 80 ? '' : `:${this.port}`}`;
     options.style = `${this.fullURL}/api/public/tclayer?port=${this.port}`;
     this.map = new mapbox.Map(options);
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css';
+    document.head.appendChild(link);
   }
 
   /**
