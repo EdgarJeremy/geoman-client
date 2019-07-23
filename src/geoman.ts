@@ -60,13 +60,14 @@ export default class GeoMan {
    * @param id string unik untuk menandai layer
    * @param data data geojson
    */
-  public addGeoJSON(id: string, data: mapbox.GeoJSONSourceOptions['data']): mapbox.Map {
+  public addGeoJSON(id: string, type: 'line' | 'symbol' | 'fill' | 'circle', data: mapbox.GeoJSONSourceOptions['data']): mapbox.Map {
     return this.map.addLayer({
       id,
+      type,
       source: {
         type: 'geojson',
         data
-      }
+      },
     });
   }
 

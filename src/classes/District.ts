@@ -1,5 +1,6 @@
 import GeoMan from "../geoman";
 import { ISubdistrictRawData, Subdistrict } from "./Subdistrict";
+import * as turf from '@turf/turf';
 
 export interface IDistrictRawData {
   id: number;
@@ -46,6 +47,25 @@ export class District {
    */
   public focus() {
     this.geoman.map.fitBounds(this.bbox);
+    
+    if(this.geoman.map.getLayer('region-lay')) {
+      this.geoman.map.removeLayer('region-lay');
+    }
+    this.getShape().then((shape) => {
+      const earth = turf.polygon([[[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]]]);
+      const lay: any = turf.difference(earth, shape);
+      this.geoman.map.addLayer({
+        id: 'region-lay',
+        type: 'fill',
+        source: {
+          type: 'geojson',
+          data: lay
+        },
+        paint: {
+          'fill-color': 'rgba(0,0,0,.6)'
+        }
+      });
+    });
   }
 
   /**
@@ -56,6 +76,14 @@ export class District {
       .then((data: ISubdistrictRawData[]) => {
         return data.map((r: ISubdistrictRawData) => new Subdistrict(this.geoman, this, r));
       });
+  }
+
+  /**
+   * Ambil bentuk (geometry) dari kecamatan ini
+   */
+  public getShape() {
+    return this.geoman.http.get(`/maps/districts/${this.id}`)
+      .then((data: any) => data.geometry);
   }
 
 }

@@ -10,16 +10,18 @@
   <div id="map" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0"></div>
 </body>
 <script src="js/geoman.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 <script>
-  var map = new GeoMan('http://localhost', 8080 ,{
-    container: 'map',
-    center: [124.842624, 1.4794296],
-    zoom: 15
-  }, GeoMan.Styles.LIGHT);
-  map.setReadyCallback(function(){
-    map.getDistricts().then(function(districts){
-      console.log(districts);
+  (async function(){
+    var geoman = new GeoMan('http://localhost', 8080 ,{
+      container: 'map',
+      center: [124.842624, 1.4794296],
+      zoom: 15
+    }, GeoMan.Styles.LIGHT);
+    geoman.setReadyCallback(async function(){
+      // ready
     });
-  });
+  })();
 </script>
 </html>

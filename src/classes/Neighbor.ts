@@ -1,6 +1,7 @@
 import GeoMan from "../geoman";
 import { District } from "./District";
 import { Subdistrict } from "./Subdistrict";
+import * as turf from '@turf/turf';
 
 export interface INeighborRawData {
   id: number;
@@ -59,6 +60,33 @@ export class Neighbor {
    */
   public focus() {
     this.geoman.map.fitBounds(this.bbox);
+
+    if(this.geoman.map.getLayer('region-lay')) {
+      this.geoman.map.removeLayer('region-lay');
+    }
+    this.getShape().then((shape) => {
+      const earth = turf.polygon([[[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]]]);
+      const lay: any = turf.difference(earth, shape);
+      this.geoman.map.addLayer({
+        id: 'region-lay',
+        type: 'fill',
+        source: {
+          type: 'geojson',
+          data: lay
+        },
+        paint: {
+          'fill-color': 'rgba(0,0,0,.6)'
+        }
+      });
+    });
+  }
+
+  /**
+   * Ambil bentuk (geometry) dari kelurahan ini
+   */
+  public getShape() {
+    return this.geoman.http.get(`/maps/districts/${this.district.id}/subdistricts/${this.subdistrict.id}/neighbors/${this.id}`)
+      .then((data: any) => data.geometry);
   }
 
 }
