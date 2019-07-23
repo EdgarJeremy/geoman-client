@@ -50,6 +50,7 @@ export class District {
     
     if(this.geoman.map.getLayer('region-lay')) {
       this.geoman.map.removeLayer('region-lay');
+      this.geoman.map.removeSource('region-lay');
     }
     this.getShape().then((shape) => {
       const earth = turf.polygon([[[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]]]);
