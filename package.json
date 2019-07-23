@@ -2,7 +2,7 @@
   "name": "geoman-client",
   "version": "0.0.4",
   "description": "",
-  "main": "./build/geoman.min.js",
+  "main": "./build/geoman.js",
   "types": "./build/geoman.d.ts",
   "scripts": {
     "dev": "yarn run tslint && tsc",
