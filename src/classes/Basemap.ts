@@ -9,6 +9,10 @@ export interface IBasemapRawData {
   color: string;
 }
 
+/**
+ * Class Basemap yang menyimpan data basemap
+ * @class Basemap
+ */
 export default class Basemap implements IBasemapRawData {
   public id: number;
   public name: string;
@@ -19,6 +23,11 @@ export default class Basemap implements IBasemapRawData {
 
   private geoman: GeoMan;
 
+  /**
+   * Membuat instance dari class Basemap
+   * @param geoman instance class GeoMan
+   * @param rawData data json raw dari backend
+   */
   constructor(geoman: GeoMan, rawData: IBasemapRawData) {
     this.id = rawData.id;
     this.name = rawData.name;
@@ -30,6 +39,9 @@ export default class Basemap implements IBasemapRawData {
     this.geoman = geoman;
   }
 
+  /**
+   * Tampilkan basemap di map
+   */
   public show() {
     const sourceID: string = `basemap-source-${this.id}`;
     const layerID: string = `basemap-layer-${this.id}`;
@@ -47,7 +59,7 @@ export default class Basemap implements IBasemapRawData {
         'type': this.type === 'Point' ? 'circle' : (this.type === 'LineString' ? 'line' : 'fill'),
         'source': sourceID,
         'source-layer': 'basemap',
-        'paint': this.getPaintStyle()
+        'paint': this.getPaintStyle(),
       }, 'tc-basemap-layer-neighbor-label');
       this.geoman.layers.push(layerID);
     } else {
@@ -55,6 +67,9 @@ export default class Basemap implements IBasemapRawData {
     }
   }
 
+  /**
+   * Sembunyikan basemap dari map
+   */
   public hide() {
     const layerID: string = `basemap-layer-${this.id}`;
     if(this.geoman.layers.indexOf(layerID) !== -1) {
@@ -62,6 +77,9 @@ export default class Basemap implements IBasemapRawData {
     }
   }
 
+  /**
+   * Memilih object `paint` untuk style layer
+   */
   private getPaintStyle() {
     switch(this.type) {
       case 'Point':

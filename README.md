@@ -15,9 +15,10 @@ const map = new GeoMap(
   8080, // port ke server geoman
   {
     container: 'map', // container di HTML
-    center: [longitude, latitude], // koordinat tengah map
+    center: [124.842624, 1.4794296], // koordinat tengah map [longitude, latitude]
     zoom: 15, // zoom map
-  }
+  },
+  GeoMap.Styles.DARK // tema map : DEFAULT, DARK, LIGHT
 );
 ```
 

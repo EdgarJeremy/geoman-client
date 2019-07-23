@@ -1,8 +1,13 @@
 import mapbox from 'mapbox-gl';
 import Basemap, { IBasemapRawData } from './classes/Basemap';
+import { HTTP } from './utils/http';
+import { IDistrictRawData, District } from './classes/District';
+
+export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD';
 
 /**
- * Class GeoMan
+ * Class utama dari GeoMan
+ * @class GeoMan
  */
 export default class GeoMan {
   public map: mapbox.Map;
@@ -11,25 +16,43 @@ export default class GeoMan {
   public fullURL: string;
   private baseURL: string;
   private port: number;
-  private avaiableBasemaps: Basemap[] = [];
+
+  public static Styles: { [k: string]: GeoManMapStyle } = {
+    DEFAULT: 'DEFAULT',
+    DARK: 'DARK',
+    LIGHT: 'LIGHT',
+    WORLD: 'WORLD'
+  }
+
+  public http: HTTP;
 
   /**
    * Membuat instance dari class GeoMan
    * @param baseURL base url server geoman
    * @param port port server geoman
    * @param options map options
+   * @param style style map GeoMan: DEFAULT | DARK | LIGHT | WORLD
    */
-  constructor(baseURL: string, port: number, options: mapbox.MapboxOptions) {
+  constructor(baseURL: string, port: number, options: mapbox.MapboxOptions, style: GeoManMapStyle = 'DEFAULT') {
     this.baseURL = baseURL;
     this.port = port;
     this.fullURL = `${this.baseURL}${this.port === 80 ? '' : `:${this.port}`}`;
-    options.style = `${this.fullURL}/api/public/tclayer?port=${this.port}`;
-    this.map = new mapbox.Map(options);
-
+    this.http = new HTTP(this.baseURL, this.port);
+    
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css';
     document.head.appendChild(link);
+
+    options.style = `${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`;
+    this.map = new mapbox.Map(options);
+  }
+
+  /**
+   * Set callback saat style map sudah selesai di-load
+   */
+  public setReadyCallback(fn: (ev: any) => void) {
+    this.map.on('style.load', fn);
   }
 
   /**
@@ -58,13 +81,20 @@ export default class GeoMan {
   /**
    * Ambil daftar basemap publik
    */
-  public getAvailableBasemaps() {
-    return fetch(`${this.fullURL}/api/basemaps?attributes=id,name,fields,type,description,color&limit=-1`)
-      .then((res: Response) => res.json())
-      .then((data: any) => data.data)
-      .then((data: any) => {
-        this.avaiableBasemaps = data.rows.map((r: IBasemapRawData) => new Basemap(this, r));
-        return this.avaiableBasemaps;
+  public getBasemaps() {
+    return this.http.get('/basemaps?attributes=id,name,fields,type,description,color&limit=-1')
+      .then((data: { count: number; rows: IBasemapRawData[] }) => {
+        return data.rows.map((r: IBasemapRawData) => new Basemap(this, r));
+      });
+  }
+
+  /**
+   * Ambil daftar kecamatan
+   */
+  public getDistricts() {
+    return this.http.get('/maps/districts')
+      .then((data: IDistrictRawData[]) => {
+        return data.map((r: IDistrictRawData) => new District(this, r));
       });
   }
 
