@@ -83,9 +83,9 @@ export default class GeoMan {
    * Ambil daftar basemap publik
    */
   public getBasemaps() {
-    return this.http.get('/basemaps?attributes=id,name,fields,type,description,color&limit=-1')
-      .then((data: { count: number; rows: IBasemapRawData[] }) => {
-        return data.rows.map((r: IBasemapRawData) => new Basemap(this, r));
+    return this.http.get('/maps/basemaps')
+      .then((data: IBasemapRawData[] ) => {
+        return data.map((r: IBasemapRawData) => new Basemap(this, r));
       });
   }
 
@@ -97,6 +97,14 @@ export default class GeoMan {
       .then((data: IDistrictRawData[]) => {
         return data.map((r: IDistrictRawData) => new District(this, r));
       });
+  }
+
+  /**
+   * Mengubah style map
+   * @param style id style
+   */
+  public setStyle(style: GeoManMapStyle) {
+    this.map.setStyle(`${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`);
   }
 
 }
