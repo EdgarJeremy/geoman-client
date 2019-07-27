@@ -1,6 +1,6 @@
 {
   "name": "geoman-client",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "",
   "main": "./build/geoman.js",
   "types": "./build/geoman.d.ts",
