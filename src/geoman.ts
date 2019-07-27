@@ -3,7 +3,7 @@ import Basemap, { IBasemapRawData } from './classes/Basemap';
 import { HTTP } from './utils/http';
 import { IDistrictRawData, District } from './classes/District';
 
-export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD';
+export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD' | 'REGIONAL';
 
 /**
  * Class utama dari GeoMan
@@ -21,7 +21,8 @@ export default class GeoMan {
     DEFAULT: 'DEFAULT',
     DARK: 'DARK',
     LIGHT: 'LIGHT',
-    WORLD: 'WORLD'
+    WORLD: 'WORLD',
+    REGIONAL: 'REGIONAL'
   }
 
   public http: HTTP;
