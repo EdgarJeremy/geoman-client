@@ -68,7 +68,7 @@ export class Neighbor {
       this.geoman.map.removeLayer('region-lay');
       this.geoman.map.removeSource('region-lay');
     }
-    this.getShape().then((shape) => {
+    return this.getShape().then((shape) => {
       const earth = turf.polygon([[[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]]]);
       const lay: any = turf.difference(earth, shape);
       this.geoman.map.addLayer({
