@@ -5,7 +5,7 @@ import { IDistrictRawData, District } from './classes/District';
 import { ISubdistrictRawData, Subdistrict } from './classes/Subdistrict';
 import { INeighborRawData, Neighbor } from './classes/Neighbor';
 
-export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD' | 'REGIONAL';
+export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD' | 'REGIONAL' | 'SATELLITE';
 
 /**
  * Class utama dari GeoMan
@@ -24,7 +24,8 @@ export default class GeoMan {
     DARK: 'DARK',
     LIGHT: 'LIGHT',
     WORLD: 'WORLD',
-    REGIONAL: 'REGIONAL'
+    REGIONAL: 'REGIONAL',
+    SATELLITE: 'SATELLITE'
   }
 
   public http: HTTP;
