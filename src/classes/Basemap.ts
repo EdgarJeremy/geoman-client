@@ -45,7 +45,7 @@ export default class Basemap implements IBasemapRawData {
   public show() {
     const sourceID: string = `basemap-source-${this.id}`;
     const layerID: string = `basemap-layer-${this.id}`;
-    if(this.geoman.sources.indexOf(sourceID) == -1) {
+    if(!this.geoman.map.getSource(sourceID)) {
       this.geoman.map.addSource(sourceID, {
         type: 'vector',
         tiles: [`${this.geoman.fullURL}/api/maps/basemaps/${this.id}/shapes?x={x}&y={y}&z={z}`]
@@ -53,7 +53,7 @@ export default class Basemap implements IBasemapRawData {
       this.geoman.sources.push(sourceID);
     }
     
-    if(this.geoman.layers.indexOf(layerID) == -1) {
+    if(!this.geoman.map.getLayer(layerID)) {
       this.geoman.map.addLayer({
         'id': layerID,
         'type': this.type === 'Point' ? 'circle' : (this.type === 'LineString' ? 'line' : 'fill'),
@@ -72,7 +72,7 @@ export default class Basemap implements IBasemapRawData {
    */
   public hide() {
     const layerID: string = `basemap-layer-${this.id}`;
-    if(this.geoman.layers.indexOf(layerID) !== -1) {
+    if(this.geoman.map.getLayer(layerID)) {
       this.geoman.map.setLayoutProperty(layerID, 'visibility', 'none');
     }
   }
