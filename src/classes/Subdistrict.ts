@@ -1,5 +1,5 @@
 import GeoMan from "../geoman";
-import { District } from "./District";
+import { District, IDistrictRawData } from "./District";
 import { INeighborRawData, Neighbor } from "./Neighbor";
 import * as turf from '@turf/turf';
 
@@ -11,6 +11,8 @@ export interface ISubdistrictRawData {
   updated_at: string;
   district_id: number;
   bbox:[number, number, number, number];
+
+  district: IDistrictRawData;
 }
 
 /**

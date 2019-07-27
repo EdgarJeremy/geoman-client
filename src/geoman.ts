@@ -2,6 +2,8 @@ import mapbox from 'mapbox-gl';
 import Basemap, { IBasemapRawData } from './classes/Basemap';
 import { HTTP } from './utils/http';
 import { IDistrictRawData, District } from './classes/District';
+import { ISubdistrictRawData, Subdistrict } from './classes/Subdistrict';
+import { INeighborRawData, Neighbor } from './classes/Neighbor';
 
 export type GeoManMapStyle = 'DEFAULT' | 'DARK' | 'LIGHT' | 'WORLD' | 'REGIONAL';
 
@@ -97,6 +99,45 @@ export default class GeoMan {
     return this.http.get('/maps/districts')
       .then((data: IDistrictRawData[]) => {
         return data.map((r: IDistrictRawData) => new District(this, r));
+      });
+  }
+  
+  /**
+   * Ambil kecamatan berdasarkan id
+   * @param id id kecamatan
+   */
+  public getDistrict(id: number) {
+    return this.http.get(`/maps/districts/${id}`)
+      .then((data: IDistrictRawData) => {
+        return new District(this, data);
+      });
+  }
+  
+  /**
+   * Ambil kelurahan berdasarkan id kecamatan dan id kelurahan
+   * @param district_id id kecamatan
+   * @param subdistrict_id id kelurahan
+   */
+  public getSubdistrict(district_id: number, subdistrict_id: number) {
+    return this.http.get(`/maps/districts/${district_id}/subdistricts/${subdistrict_id}`)
+      .then((data: ISubdistrictRawData) => {
+        const district: District = new District(this, data.district);
+        return new Subdistrict(this, district, data);
+      });
+  }
+
+  /**
+   * Ambil lingkungan berdasarkan id kecamatan dan id kelurahan dan id lingkungan
+   * @param district_id id kecamatan
+   * @param subdistrict_id id kelurahan
+   * @param neighbor_id id lingkungan
+   */
+  public getNeighbor(district_id: number, subdistrict_id: number, neighbor_id: number) {
+    return this.http.get(`/maps/districts/${district_id}/subdistricts/${subdistrict_id}/neighbors/${neighbor_id}`)
+      .then((data: INeighborRawData) => {
+        const district: District = new District(this, data.district);
+        const subdistrict: Subdistrict = new Subdistrict(this, district, data.subdistrict);
+        return new Neighbor(this, district, subdistrict, data);
       });
   }
 
