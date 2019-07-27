@@ -101,7 +101,7 @@ export default class GeoMan {
         return data.map((r: IDistrictRawData) => new District(this, r));
       });
   }
-  
+
   /**
    * Ambil kecamatan berdasarkan id
    * @param id id kecamatan
@@ -112,7 +112,7 @@ export default class GeoMan {
         return new District(this, data);
       });
   }
-  
+
   /**
    * Ambil kelurahan berdasarkan id kecamatan dan id kelurahan
    * @param district_id id kecamatan
@@ -155,9 +155,13 @@ export default class GeoMan {
    * @param regionName nama region yang akan di-attach event
    * @param cb callback ketika event terjadi
    */
-  public setRegionLabelEvent(ev: 'touchcancel' | 'touchend' | 'touchstart' | 'click' | 'contextmenu' | 'dblclick' | 'mousemove' | 'mouseup' | 'mousedown' | 'mouseout' | 'mouseover' | 'mouseenter' | 'mouseleave', regionName: 'district' | 'subdistrict' | 'neighbor', cb: (feature: mapbox.MapboxGeoJSONFeature | null) => void) {
+  public setRegionLabelEvent(ev: 'touchcancel' | 'touchend' | 'touchstart' | 'click' | 'contextmenu' | 'dblclick' | 'mousemove' | 'mouseup' | 'mousedown' | 'mouseout' | 'mouseover' | 'mouseenter' | 'mouseleave', regionName: 'district' | 'subdistrict' | 'neighbor', cb: (feature: mapbox.MapboxGeoJSONFeature | null, ev: (mapbox.MapTouchEvent & {
+    features?: mapbox.MapboxGeoJSONFeature[] | undefined;
+  } & mapbox.EventData) | (mapbox.MapMouseEvent & {
+    features?: mapbox.MapboxGeoJSONFeature[] | undefined;
+  } & mapbox.EventData)) => void) {
     const layerName: string = `tc-basemap-layer-${regionName}-label`;
-    this.map.on(ev, layerName, (d) => cb(d.features ? d.features[0] : null));
+    this.map.on(ev, layerName, (d) => cb(d.features ? d.features[0] : null, d));
     this.map.on('mouseenter', layerName, (e) => {
       this.map.getCanvas().style.cursor = 'pointer';
     });
