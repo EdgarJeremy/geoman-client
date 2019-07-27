@@ -12,6 +12,7 @@
     - [Mengambil Lingkungan](#mengambil-lingkungan)
     - [Mengambil Geometry](#mengambil-geometry)
     - [Mengarahkan Peta Ke Wilayah Tertentu](#mengarahkan-peta-ke-wilayah-tertentu)
+    - [Menyematkan Event Ke Label Wilayah](#menyematkan-event-ke-label-wilayah)
   - [Basemap](#basemap)
     - [Mengambil Basemap](#mengambil-basemap)
     - [Menampilkan Basemap](#menampilkan-basemap)
@@ -133,4 +134,17 @@ basemap.show(): void
 
 ```javascript
 basemap.hide(): void
+```
+
+#### Menyematkan Event Ke Label Wilayah
+Menyematkan fungsi yang akan dipanggil saat event pada parameter `ev` terjadi
+```javascript
+map.setRegionLabelEvent(ev: string, regionName: 'district' | 'subdistrict' | 'neighbor', cb: Function): void
+```
+
+Contoh
+```javascript
+map.setRegionLabelEvent('click', 'district', (feature) => {
+  console.log(feature); // informasi wilayah yang diklik
+});
 ```

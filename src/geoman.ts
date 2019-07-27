@@ -39,7 +39,7 @@ export default class GeoMan {
     this.port = port;
     this.fullURL = `${this.baseURL}${this.port === 80 ? '' : `:${this.port}`}`;
     this.http = new HTTP(this.baseURL, this.port);
-    
+
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css';
@@ -85,7 +85,7 @@ export default class GeoMan {
    */
   public getBasemaps() {
     return this.http.get('/maps/basemaps')
-      .then((data: IBasemapRawData[] ) => {
+      .then((data: IBasemapRawData[]) => {
         return data.map((r: IBasemapRawData) => new Basemap(this, r));
       });
   }
@@ -106,6 +106,23 @@ export default class GeoMan {
    */
   public setStyle(style: GeoManMapStyle) {
     this.map.setStyle(`${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`);
+  }
+
+  /**
+   * Menentukan event di label wilayah
+   * @param ev event untuk di-attach
+   * @param regionName nama region yang akan di-attach event
+   * @param cb callback ketika event terjadi
+   */
+  public setRegionLabelEvent(ev: 'touchcancel' | 'touchend' | 'touchstart' | 'click' | 'contextmenu' | 'dblclick' | 'mousemove' | 'mouseup' | 'mousedown' | 'mouseout' | 'mouseover' | 'mouseenter' | 'mouseleave', regionName: 'district' | 'subdistrict' | 'neighbor', cb: (feature: mapbox.MapboxGeoJSONFeature | null) => void) {
+    const layerName: string = `tc-basemap-layer-${regionName}-label`;
+    this.map.on(ev, layerName, (d) => cb(d.features ? d.features[0] : null));
+    this.map.on('mouseenter', layerName, (e) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+    this.map.on('mouseleave', layerName, (e) => {
+      this.map.getCanvas().style.cursor = '';
+    });
   }
 
 }
