@@ -78,6 +78,23 @@ export default class Basemap implements IBasemapRawData {
   }
 
   /**
+   * Set opacity dari basemap
+   * @param opacity nilai opacity
+   */
+  public setOpacity(opacity: number) {
+    const layerID: string = `basemap-layer-${this.id}`;
+    if(this.geoman.map.getLayer(layerID)) {
+      this.geoman.map.setPaintProperty(
+        layerID,
+        (this.type === 'Point' ? 'circle-opacity' : (
+          this.type === 'LineString' ? 'line-opacity' : 'fill-opacity'
+        )),
+        opacity
+      );
+    }
+  }
+
+  /**
    * Memilih object `paint` untuk style layer
    */
   private getPaintStyle() {
