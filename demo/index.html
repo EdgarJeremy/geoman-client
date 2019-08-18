@@ -20,7 +20,8 @@
       zoom: 15
     }, GeoMan.Styles.SATELLITE);
     geoman.setReadyCallback(async function(){
-      //ready
+      const basemaps = await geoman.getBasemaps();
+      console.log(basemaps);
     });
   })();
 </script>
