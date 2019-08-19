@@ -19,6 +19,7 @@ export default class GeoMan {
   private baseURL: string;
   private port: number;
   private center: mapboxgl.MapboxOptions['center'];
+  private zoom: mapboxgl.MapboxOptions['zoom'];
 
   public static Styles: { [k: string]: GeoManMapStyle } = {
     DEFAULT: 'DEFAULT',
@@ -51,6 +52,7 @@ export default class GeoMan {
 
     options.style = `${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`;
     this.center = options.center;
+    this.zoom = options.zoom;
     this.map = new mapbox.Map(options);
   }
 
@@ -160,7 +162,7 @@ export default class GeoMan {
       this.map.removeLayer('region-lay');
       this.map.removeSource('region-lay');
     }
-    this.map.flyTo({ center: this.center });
+    this.map.flyTo({ center: this.center, zoom: this.zoom });
   }
 
   /**
