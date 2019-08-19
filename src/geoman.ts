@@ -18,6 +18,7 @@ export default class GeoMan {
   public fullURL: string;
   private baseURL: string;
   private port: number;
+  private center: mapboxgl.MapboxOptions['center'];
 
   public static Styles: { [k: string]: GeoManMapStyle } = {
     DEFAULT: 'DEFAULT',
@@ -49,6 +50,7 @@ export default class GeoMan {
     document.head.appendChild(link);
 
     options.style = `${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`;
+    this.center = options.center;
     this.map = new mapbox.Map(options);
   }
 
@@ -148,6 +150,17 @@ export default class GeoMan {
    */
   public setStyle(style: GeoManMapStyle) {
     this.map.setStyle(`${this.fullURL}/api/public/tclayer?port=${this.port}&style=${style.toLowerCase()}`);
+  }
+
+  /**
+   * Clear semua fokus daerah dan center ke default
+   */
+  public clearFocuses() {
+    if (this.map.getLayer('region-lay')) {
+      this.map.removeLayer('region-lay');
+      this.map.removeSource('region-lay');
+    }
+    this.map.flyTo({ center: this.center });
   }
 
   /**
